@@ -19,6 +19,7 @@ export class ItemsService {
     this.adreServer=adress;
     console.log("------Adressed fixed------");
     console.log(this.adreServer);
+    // try to do a setTimeout() foreach 1000ms=1s the same baudrate of the server, so we can have a sychronous data
     this.fetchItems();
  }
 
