@@ -44,7 +44,7 @@ export class ItemsService {
     return this.items.asObservable();
   }
 
-  getItemsId(): Observable<any> {
+  getItemsId(): Observable<opcItems> {
     return this.itemsIds.asObservable();
   }
 
