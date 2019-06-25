@@ -30,7 +30,7 @@ export class ItemsService {
     }}).subscribe((el) => {
       el.browseResults.forEach(id=>{
         this.itemsIds.next(id);
-        this.fetchReadItem(this.fixidsWhiteSpace(id));
+        this.fetchReadItem(id);
       });
     });
     return this.items.asObservable();
@@ -38,7 +38,7 @@ export class ItemsService {
 
   fetchReadItem(id:String):Observable<opcItem>{
     this.items.next();
-    this.http.get(this.adreServer+environment.itemRead+id,{headers: {
+    this.http.get(this.adreServer+environment.itemRead+this.fixidsWhiteSpace(id),{headers: {
       "Content-Type": 'text/json; charset=utf-8'
     }}).subscribe((item:opcItem)=>{
       this.items.next(item.readResults);
