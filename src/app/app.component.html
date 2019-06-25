@@ -2,9 +2,13 @@
   <h1>
      {{ title }}
   </h1>
-  <input type="text" [(ngModel)]="server"/>
-  <button (click)="getTheThing()">Out</button>
-  
+  <div class="example-container">
+    <mat-form-field class="example-full-width">
+      <input matInput value="server adress" [(ngModel)]="server" type="text">
+    </mat-form-field>
+    <button mat-raised-button (click)="getTheThing()">FIXED</button>
+  </div>
  </div>
+
 
 
