@@ -4,7 +4,7 @@ export type opcItems={
 
 export type opcItem={
     "readResults":{
-        "id": String
+        "id": String,
         "s": boolean,
         "r": String,
         "v":String,
