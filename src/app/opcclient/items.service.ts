@@ -45,7 +45,7 @@ export class ItemsService {
     return this.items.asObservable();
   }
 
-  getItemsId(): Observable<opcItems> {
+  getItemsId(): Observable<opcItems[]> {
     return this.itemsIds.asObservable();
   }
 
