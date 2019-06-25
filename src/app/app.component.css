@@ -8,4 +8,8 @@
   width: 100%;
 }
 
+.example-container button{
+  display: inline-flex;
+}
+
 

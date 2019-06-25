@@ -10,11 +10,14 @@ import {opcItems, opcItem} from './opcclient/itemsType';
 export class AppComponent {
   title = 'Iot Gateway';
   server = '';
+  serveFix = false;
   constructor(private service: ItemsService) {
   }
 
   getTheThing() {
     this.service.fixAdress(this.server);
+    this.serveFix = true;
+    this.server = '';
   }
 
   public getItemsId() {

@@ -4,9 +4,11 @@
   </h1>
   <div class="example-container">
     <mat-form-field class="example-full-width">
-      <input matInput value="server adress" [(ngModel)]="server" type="text">
+      <input matInput value="server adress" [(ngModel)]="server" >
     </mat-form-field>
-    <button mat-raised-button (click)="getTheThing()">FIXED</button>
+    <button mat-raised-button (click)="getTheThing()" *ngIf="!serveFix">FIXED</button>
+    <button mat-raised-button (click)="getItems()" *ngIf="serveFix">ITEMS</button>
+
   </div>
  </div>
 
