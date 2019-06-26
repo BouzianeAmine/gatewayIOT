@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {ItemsService} from './opcclient/items.service';
-import {opcItems, opcItem} from './opcclient/itemsType';
+import {opcItems, OpcItem} from './opcclient/itemsType';
+import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,8 @@ export class AppComponent {
   title = 'Iot Gateway';
   server = '';
   serveFix = false;
+  fetching = false;
+  private items: Array<OpcItem> = [];
   constructor(private service: ItemsService) {
   }
 
@@ -25,17 +28,23 @@ export class AppComponent {
         console.log(item);
     });
   }
-  public getItembyId(id: string) {
+  /*public getItembyId(id: string) {
     this.service.fetchReadItem(id).subscribe((item: opcItem ) => {
       console.log(item.readResults);
     });
-  }
+  }*/
 
   public getItems() {
-    this.service.fetchItems().subscribe(items => {
-      items.forEach(item => {
-        console.log(item);
-      });
+    this.fetching = true;
+    this.service.fetchItems();
+    this.service.getItems().subscribe((item: OpcItem ) => {
+      this.items.push(item);
+      console.log(item);
     });
+    /*this.items.filter(item => item = undefined).forEach(item => {
+      console.log(item);
+    });*/
+    return this.items;
   }
+
 }

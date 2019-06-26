@@ -7,13 +7,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
 import { AppComponent } from './app.component';
-
+import {MatListModule} from '@angular/material/list';
 @NgModule({
   declarations: [
     AppComponent
    ],
   imports: [
-    BrowserModule, HttpClientModule, FormsModule, BrowserAnimationsModule , MatFormFieldModule , MatInputModule , MatButtonModule
+    // tslint:disable-next-line:max-line-length
+    BrowserModule, HttpClientModule, FormsModule, BrowserAnimationsModule , MatFormFieldModule , MatInputModule , MatButtonModule, MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
