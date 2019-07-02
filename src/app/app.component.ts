@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ItemsService} from './opcclient/items.service';
-import {opcItems, OpcItem} from './opcclient/itemsType';
-import { Observable, Observer } from 'rxjs';
+import { Item, ItemWrite } from './opcclient/itemsType';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +8,16 @@ import { Observable, Observer } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+
   title = 'Iot Gateway';
   server = '';
   serveFix = false;
-  fetching = false;
-  private items: Array<OpcItem> = [];
-  constructor(private service: ItemsService) {
-  }
+  items: Array<Item>;
+  fetching: boolean;
+  constructor(private service: ItemsService) { }
+
+
 
   getTheThing() {
     this.service.fixAdress(this.server);
@@ -28,23 +30,28 @@ export class AppComponent {
         console.log(item);
     });
   }
-  /*public getItembyId(id: string) {
-    this.service.fetchReadItem(id).subscribe((item: opcItem ) => {
-      console.log(item.readResults);
-    });
-  }*/
+
 
   public getItems() {
+    this.items = [];
     this.fetching = true;
-    this.service.fetchItems();
-    this.service.getItems().subscribe((item: OpcItem ) => {
-      this.items.push(item);
-      console.log(item);
+    this.service.clearItems();
+    this.service.getItems().subscribe((item: Item) => {
+      if (item !== undefined) {
+        this.items.push(item);
+      }
     });
-    /*this.items.filter(item => item = undefined).forEach(item => {
-      console.log(item);
-    });*/
     return this.items;
-  }
+    }
 
+
+    public isServerFixed(): boolean {
+      return this.serveFix;
+    }
+
+    sendCommand(id: string) {
+      const v = 5;
+      const data: ItemWrite = {id , v };
+      this.service.sendCommand(data);
+    }
 }

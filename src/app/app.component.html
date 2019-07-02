@@ -4,15 +4,15 @@
   </h1>
   <div class="example-container">
     <mat-form-field class="example-full-width">
-      <input matInput value="server adress" [(ngModel)]="server" >
+      <input matInput [hidden]="fetching" value="server adress" [(ngModel)]="server" >
     </mat-form-field>
     <button mat-raised-button (click)="getTheThing()" *ngIf="!serveFix">FIXED</button>
     <button mat-raised-button (click)="getItems()" *ngIf="serveFix">ITEMS</button>
   </div>
-  <!--<mat-list *ngIf="serveFix && fetching" role="list">
-    <mat-list-item  *ngFor="let item of getItems()" role="listitem">{{item}}</mat-list-item>
-  </mat-list>-->
+  <mat-list *ngIf="serveFix && fetching" role="list">
+    <mat-list-item  *ngFor="let item of items" role="listitem">
+      <mat-card (click)="sendCommand(item.id)"> Capteur : {{item.id}} Value : {{item.v}}</mat-card>
+      <!--<button mat-raised-button (click)="sendCommand(item.id)" *ngIf="!serveFix">EDIT</button>-->
+     </mat-list-item><br>
+  </mat-list>
  </div>
-
-
-

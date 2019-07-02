@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, throwError, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {environment} from './../../environments/environment.prod';
-import {opcItems, OpcItem} from './itemsType';
+import {IdsItems, Item, Items, ItemWrite, ResponseWriteCommand, ItemWriteResponse} from './itemsType';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,9 @@ import {opcItems, OpcItem} from './itemsType';
 
 export class ItemsService {
   public itemsIds = new Subject<any>();
-  public items = new Subject<any>();
+  public items = new Subject<Item>();
   private adreServer: string;
-
+  private requete: string;
   constructor(private http: HttpClient) {}
 
  fixAdress(adress: string) {
@@ -23,30 +23,34 @@ export class ItemsService {
  }
 
  fetchItems() {
-    setTimeout(() => {
-      this.items.next();
-    }, 1000);
-    this.http.get<opcItems>(this.adreServer + environment.items, {headers: {
+    this.requete = '';
+    // this.items.next();
+    this.http.get<IdsItems>(this.adreServer + environment.items, {headers: {
       'Content-Type': 'text/json; charset=utf-8'
-    }}).subscribe((el: opcItems ) => {
-     // tslint:disable-next-line:prefer-for-of
-     for (let index = 0; index < el.browseResults.length; index++) {
-       this.itemsIds.next(el.browseResults[index].id);
-       this.fetchReadItem(el.browseResults[index].id);
-     }
+    }}).subscribe((el ) => {
+        for (let index = 0; index < el.browseResults.length; index++) {
+          this.itemsIds.next(el.browseResults[index].id);
+          if (index === el.browseResults.length - 1 ) {
+            this.caseLastOne(el.browseResults[index].id);
+          } else {
+            this.anyOtherCase(el.browseResults[index].id);
+          }
+        }
+        this.fetchReadItem(this.requete);
+     });
+  }
+
+  fetchReadItem(requete: string) {
+    this.http.get<Items>(this.adreServer + environment.itemRead + this.requete, { headers: {
+      'Content-Type': 'text/json; charset=utf-8'
+    }}).subscribe((items) => {
+      items.readResults.forEach((item: Item) => {
+        this.items.next(item);
+      });
     });
   }
 
-  fetchReadItem(id: string) {
-    this.items.next();
-    this.http.get(this.adreServer + environment.itemRead + this.fixidsWhiteSpace(id), { headers: {
-      'Content-Type': 'text/json; charset=utf-8'
-    }}).subscribe((item: { readResults: Array<OpcItem> }) => {
-      this.items.next(item.readResults);
-    });
-  }
-
-  getItemsId(): Observable<opcItems[]> {
+  getItemsId(): Observable<IdsItems> {
     return this.itemsIds.asObservable();
   }
 
@@ -54,7 +58,31 @@ export class ItemsService {
     return id.replace(/ /g, '%20');
   }
 
-  getItems() {
+  getItems(): Observable<Item> {
+    this.fetchItems();
     return this.items.asObservable();
+  }
+
+  anyOtherCase(id: string ) {
+    this.requete = this.requete.concat(id);
+    this.requete = this.requete.concat( '&ids=' );
+  }
+
+  caseLastOne(id: string ) {
+    this.requete = this.requete.concat(id);
+  }
+
+  clearItems() {
+    this.items.next();
+  }
+
+  sendCommand(item: ItemWrite) {
+    this.http.post<ItemWriteResponse>(this.adreServer + environment.itemWrite, [item], { headers: {
+      'Content-Type': 'text/json; charset=utf-8'
+    }}).subscribe((response) => {
+      if (response.s) {
+        console.log('Done !!');
+      }
+    });
   }
 }
