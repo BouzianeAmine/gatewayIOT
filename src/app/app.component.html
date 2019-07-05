@@ -9,10 +9,11 @@
     <button mat-raised-button (click)="getTheThing()" *ngIf="!serveFix">FIXED</button>
     <button mat-raised-button (click)="getItems()" *ngIf="serveFix">ITEMS</button>
   </div>
-  <mat-list *ngIf="serveFix && fetching" role="list">
-    <mat-list-item  *ngFor="let item of items" role="listitem">
-      <mat-card (click)="sendCommand(item.id)"> Capteur : {{item.id}} Value : {{item.v}}</mat-card>
-      <!--<button mat-raised-button (click)="sendCommand(item.id)" *ngIf="!serveFix">EDIT</button>-->
-     </mat-list-item><br>
-  </mat-list>
+  <br><br><br>
+  <mat-card *ngIf="fetching">
+    <mat-card *ngFor="let ite of items">
+      <mat-card (click)="sendCommand(ite.id)"> Capteur : {{ ite.id}} </mat-card>
+      <mat-card>Value : {{ite.v}}</mat-card>
+    </mat-card>
+  </mat-card>
  </div>

@@ -9,11 +9,11 @@ import { Item, ItemWrite } from './opcclient/itemsType';
 })
 export class AppComponent {
 
-
+  item: Item ;
   title = 'Iot Gateway';
   server = '';
   serveFix = false;
-  items: Array<Item>;
+  items = new Array<Item>();
   fetching: boolean;
   constructor(private service: ItemsService) { }
 
@@ -33,16 +33,13 @@ export class AppComponent {
 
 
   public getItems() {
-    this.items = [];
     this.fetching = true;
-    this.service.clearItems();
-    this.service.getItems().subscribe((item: Item) => {
-      if (item !== undefined) {
-        this.items.push(item);
-      }
+    this.service.fetchItems((item: Item) => {
+      this.items.push(item);
+      // this.item = item;
+      // this.items = [];
     });
-    return this.items;
-    }
+  }
 
 
     public isServerFixed(): boolean {
