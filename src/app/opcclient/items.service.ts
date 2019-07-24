@@ -40,17 +40,17 @@ export class ItemsService {
      });
   }
 
-  // tslint:disable-next-line:ban-types async with callbacks
   fetchReadItem(requete: string, back: Function) {
     this.items = new Subject<Item>();
     this.http.get<Items>(this.adreServer + environment.itemRead + this.requete, { headers: {
       'Content-Type': 'text/json; charset=utf-8'
     }}).subscribe((items) => {
       if (items.readResults) {
-        items.readResults.forEach((item: Item) => {
+        back(items.readResults);
+        /*items.readResults.forEach((item: Item) => {
           // this.items.next(item);
-          back(item);
-        });
+          back();
+        });*/
         setTimeout( () => { this.fetchReadItem(this.requete, back); }, 1000);
       }
     });
@@ -64,10 +64,6 @@ export class ItemsService {
     return id.replace(/ /g, '%20');
   }
 
-  /*getItems(): Observable<Item> {
-    this.fetchItems();
-    return this.items.asObservable();
-  }*/
 
   anyOtherCase(id: string ) {
     this.requete = this.requete.concat(id);

@@ -14,7 +14,19 @@ export class AppComponent {
   server = '';
   serveFix = false;
   items = new Array<Item>();
+  public barChartData = [];
+  public barChartLabels;
   fetching: boolean;
+
+  //Chart conf
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+
+  public barChartType = 'line';
+  public barChartLegend = true;
+
   constructor(private service: ItemsService) { }
 
 
@@ -34,14 +46,20 @@ export class AppComponent {
 
   public getItems() {
     this.fetching = true;
-    this.service.fetchItems((item: Item) => {
-      this.items.push(item);
-      // this.item = item;
-      // this.items = [];
+    this.items=new Array<Item>();
+    this.service.fetchItems((items: Array<Item>) => {
+      this.items=items;
     });
   }
 
-
+    createChart(items: Array <Item>) {
+      items.forEach( (item: Item ) => {
+        this.barChartLabels = [Date.now().toString()];
+        this.barChartData = [
+          {data: [item.v], label: item.id}
+        ];
+      });
+    }
     public isServerFixed(): boolean {
       return this.serveFix;
     }

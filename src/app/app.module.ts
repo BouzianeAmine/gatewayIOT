@@ -8,7 +8,8 @@ import {MatInputModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
 import { AppComponent } from './app.component';
 import {MatListModule, MatCardModule} from '@angular/material/';
-//import {MatCardModule} from '@angular/material/card';
+// import {MatCardModule} from '@angular/material/card';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import {MatListModule, MatCardModule} from '@angular/material/';
    ],
   imports: [
     // tslint:disable-next-line:max-line-length
-    BrowserModule, HttpClientModule, FormsModule, BrowserAnimationsModule , MatFormFieldModule , MatInputModule , MatButtonModule, MatListModule, MatCardModule
+    BrowserModule, HttpClientModule, FormsModule, BrowserAnimationsModule , MatFormFieldModule , MatInputModule , MatButtonModule, MatListModule, MatCardModule, ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

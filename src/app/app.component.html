@@ -8,6 +8,7 @@
     </mat-form-field>
     <button mat-raised-button (click)="getTheThing()" *ngIf="!serveFix">FIXED</button>
     <button mat-raised-button (click)="getItems()" *ngIf="serveFix">ITEMS</button>
+    <!--<button mat-raised-button (click)="createChart()" *ngIf="serveFix">CHART</button>-->
   </div>
   <br><br><br>
   <mat-card *ngIf="fetching">
@@ -17,3 +18,16 @@
     </mat-card>
   </mat-card>
  </div>
+<!--
+ <div *ngIf="fetching">
+    <div style="display: block">
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType">
+      </canvas>
+    </div>
+  </div>
+  -->
