@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, throwError, Observable } from 'rxjs';
+//import { Subject, throwError, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {environment} from './../../environments/environment.prod';
 import {IdsItems, Item, Items, ItemWrite, ResponseWriteCommand, ItemWriteResponse} from './itemsType';
@@ -10,8 +10,6 @@ import {IdsItems, Item, Items, ItemWrite, ResponseWriteCommand, ItemWriteRespons
 
 
 export class ItemsService {
-  public itemsIds = new Subject<any>();
-  public items = new Subject<Item>();
   private adreServer: string;
   private requete: string;
   constructor(private http: HttpClient) {}
@@ -22,14 +20,12 @@ export class ItemsService {
     console.log(this.adreServer);
  }
 
- // tslint:disable-next-line:ban-types
  fetchItems(calling: Function) {
     this.requete = '';
     this.http.get<IdsItems>(this.adreServer + environment.items, {headers: {
       'Content-Type': 'text/json; charset=utf-8'
     }}).subscribe((el ) => {
         for (let index = 0; index < el.browseResults.length; index++) {
-          this.itemsIds.next(el.browseResults[index].id);
           if (index === el.browseResults.length - 1 ) {
             this.caseLastOne(el.browseResults[index].id);
           } else {
@@ -41,28 +37,20 @@ export class ItemsService {
   }
 
   fetchReadItem(requete: string, back: Function) {
-    this.items = new Subject<Item>();
     this.http.get<Items>(this.adreServer + environment.itemRead + this.requete, { headers: {
       'Content-Type': 'text/json; charset=utf-8'
     }}).subscribe((items) => {
       if (items.readResults) {
         back(items.readResults);
-        /*items.readResults.forEach((item: Item) => {
-          // this.items.next(item);
-          back();
-        });*/
+        //repeat the call so we can have the update each second
         setTimeout( () => { this.fetchReadItem(this.requete, back); }, 1000);
       }
     });
   }
 
-  getItemsId(): Observable<IdsItems> {
-    return this.itemsIds.asObservable();
-  }
-
-  fixidsWhiteSpace(id: string) {
+  /*fixidsWhiteSpace(id: string) {
     return id.replace(/ /g, '%20');
-  }
+  }*/
 
 
   anyOtherCase(id: string ) {
@@ -74,15 +62,11 @@ export class ItemsService {
     this.requete = this.requete.concat(id);
   }
 
-  clearItems() {
-    this.items.next();
-  }
-
   sendCommand(item: ItemWrite) {
-    this.http.post<ItemWriteResponse>(this.adreServer + environment.itemWrite, [item], { headers: {
+    this.http.post<ResponseWriteCommand>(this.adreServer + environment.itemWrite, [item], { headers: {
       'Content-Type': 'text/json; charset=utf-8'
     }}).subscribe((response) => {
-      if (response.s) {
+      if (response.writeResults[0].s) {
         console.log('Done !!');
       }
     });

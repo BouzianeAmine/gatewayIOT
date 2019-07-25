@@ -4,30 +4,17 @@
   </h1>
   <div class="example-container">
     <mat-form-field class="example-full-width">
-      <input matInput [hidden]="fetching" value="server adress" [(ngModel)]="server" >
+      <input matInput [hidden]="fetching" value="Server Adress" [(ngModel)]="server" >
     </mat-form-field>
-    <button mat-raised-button (click)="getTheThing()" *ngIf="!serveFix">FIXED</button>
-    <button mat-raised-button (click)="getItems()" *ngIf="serveFix">ITEMS</button>
-    <!--<button mat-raised-button (click)="createChart()" *ngIf="serveFix">CHART</button>-->
+    <button mat-raised-button (click)="getTheThing()" *ngIf="!isServerFixed()">FIXED</button>
+    <button mat-raised-button (click)="getItems()" *ngIf="isServerFixed()">ITEMS</button>
   </div>
   <br><br><br>
   <mat-card *ngIf="fetching">
     <mat-card *ngFor="let ite of items">
-      <mat-card (click)="sendCommand(ite.id)"> Capteur : {{ ite.id}} </mat-card>
+      <mat-card (click)="sendCommand(ite.id)"> Sensor : {{ ite.id}} </mat-card>
       <mat-card>Value : {{ite.v}}</mat-card>
     </mat-card>
   </mat-card>
  </div>
-<!--
- <div *ngIf="fetching">
-    <div style="display: block">
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [chartType]="barChartType">
-      </canvas>
-    </div>
-  </div>
-  -->
+
