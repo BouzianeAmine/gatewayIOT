@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-//import { Subject, throwError, Observable } from 'rxjs';
+import { skipLast,last } from 'rxjs/operators';
+import { from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {environment} from './../../environments/environment.prod';
 import {IdsItems, Item, Items, ItemWrite, ResponseWriteCommand, ItemWriteResponse} from './itemsType';
@@ -25,13 +26,9 @@ export class ItemsService {
     this.http.get<IdsItems>(this.adreServer + environment.items, {headers: {
       'Content-Type': 'text/json; charset=utf-8'
     }}).subscribe((el ) => {
-        for (let index = 0; index < el.browseResults.length; index++) {
-          if (index === el.browseResults.length - 1 ) {
-            this.caseLastOne(el.browseResults[index].id);
-          } else {
-            this.anyOtherCase(el.browseResults[index].id);
-          }
-        }
+        let elements = from(el.browseResults);
+        elements.pipe(skipLast(1)).subscribe(element=>this.anyOtherCase(element.id));
+        elements.pipe(last()).subscribe((lastElement)=>this.caseLastOne(lastElement.id));
         this.fetchReadItem(this.requete, calling);
      });
   }
@@ -44,7 +41,7 @@ export class ItemsService {
         back(items.readResults);
         //repeat the call so we can have the update each second
         setTimeout( () => { this.fetchReadItem(this.requete, back); }, 1000);
-      }
+      }else throw new Error("No elemnts hapen to be read, check your server adresse");
     });
   }
 
