@@ -47,7 +47,7 @@ export class AppComponent {
     this.fetching = !this.fetching;
     this.serveFix = !this.serveFix;
   }
-
+  // this setCommand is only for test
   public sendCommand(id: string) {
     const v = 5;
     const data: ItemWrite = {id , v };
