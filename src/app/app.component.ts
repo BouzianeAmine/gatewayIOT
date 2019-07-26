@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { from } from 'rxjs';
+import { skipLast,last } from 'rxjs/operators';
 import {ItemsService} from './opcclient/items.service';
 import { Item, ItemWrite } from './opcclient/itemsType';
 
@@ -9,12 +11,12 @@ import { Item, ItemWrite } from './opcclient/itemsType';
 })
 export class AppComponent {
 
-  item: Item ;
+  item : Item ;
   title = 'Iot Gateway';
   server = '';
   serveFix = false;
   items = new Array<Item>();
-  fetching: boolean;
+  fetching : boolean;
 
   constructor(private service: ItemsService) { }
 
@@ -26,14 +28,19 @@ export class AppComponent {
 
   public getItems() {
     this.fetching = true;
-    this.items=new Array<Item>();
+    this.items = new Array<Item>();
     this.service.fetchItems((items: Array<Item>) => {
-      this.items=items;
+      items.forEach(item => item.id = this.setName(item.id));
+      this.items = items;
     });
   }
 
   public isServerFixed(): boolean {
     return this.serveFix;
+  }
+
+  public setName(name:string): string{
+    return name.split('.')[name.split('.').length-1];
   }
 
   sendCommand(id: string) {

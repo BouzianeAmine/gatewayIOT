@@ -3,7 +3,7 @@ import { skipLast,last } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {environment} from './../../environments/environment.prod';
-import {IdsItems, Item, Items, ItemWrite, ResponseWriteCommand, ItemWriteResponse} from './itemsType';
+import {IdsItems, Items, ItemWrite, ResponseWriteCommand, ItemWriteResponse} from './itemsType';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +26,8 @@ export class ItemsService {
     this.http.get<IdsItems>(this.adreServer + environment.items, {headers: {
       'Content-Type': 'text/json; charset=utf-8'
     }}).subscribe((el ) => {
-        let elements = from(el.browseResults);
-        elements.pipe(skipLast(1)).subscribe(element=>this.anyOtherCase(element.id));
-        elements.pipe(last()).subscribe((lastElement)=>this.caseLastOne(lastElement.id));
+        from(el.browseResults).pipe(skipLast(1)).subscribe(element=>this.anyOtherCase(element.id));
+        from(el.browseResults).pipe(last()).subscribe((lastElement)=>this.caseLastOne(lastElement.id));
         this.fetchReadItem(this.requete, calling);
      });
   }
