@@ -43,7 +43,12 @@ export class AppComponent {
     return name.split('.')[name.split('.').length-1];
   }
 
-  sendCommand(id: string) {
+  public reset(): void {
+    this.fetching = !this.fetching;
+    this.serveFix = !this.serveFix;
+  }
+
+  public sendCommand(id: string) {
     const v = 5;
     const data: ItemWrite = {id , v };
     this.service.sendCommand(data);

@@ -8,6 +8,7 @@
     </mat-form-field>
     <button mat-raised-button (click)="getTheThing()" *ngIf="!isServerFixed()">FIXED</button>
     <button mat-raised-button (click)="getItems()" *ngIf="isServerFixed()">ITEMS</button>
+    <button mat-raised-button (click)="reset()" *ngIf="isServerFixed()">RESET</button>
   </div>
   <br><br><br>
   <mat-card *ngIf="fetching">
