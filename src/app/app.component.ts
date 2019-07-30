@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { from } from 'rxjs';
-import { skipLast,last } from 'rxjs/operators';
-import {ItemsService} from './opcclient/items.service';
-import { Item, ItemWrite } from './opcclient/itemsType';
+import { Component} from '@angular/core';
+import { PopUpComponent } from './pop-up/pop-up.component';
+import { ItemWrite, Item } from './opcclient/itemsType';
+import { MatDialog } from '@angular/material/dialog';
+import { ItemsService } from './opcclient/items.service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,27 +11,26 @@ import { Item, ItemWrite } from './opcclient/itemsType';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
-  item : Item ;
   title = 'Iot Gateway';
   server = '';
   serveFix = false;
   items = new Array<Item>();
   fetching : boolean;
+  v: any;
 
-  constructor(private service: ItemsService) { }
+  constructor(private service: ItemsService,public dialog: MatDialog) { }
 
   getTheThing() {
     this.service.fixAdress(this.server);
     this.serveFix = true;
     this.server = '';
+    this.getItems();
   }
 
   public getItems() {
     this.fetching = true;
     this.items = new Array<Item>();
     this.service.fetchItems((items: Array<Item>) => {
-      items.forEach(item => item.id = this.setName(item.id));
       this.items = items;
     });
   }
@@ -47,10 +47,17 @@ export class AppComponent {
     this.fetching = !this.fetching;
     this.serveFix = !this.serveFix;
   }
-  // this setCommand is only for test
-  public sendCommand(id: string) {
-    const v = 5;
-    const data: ItemWrite = {id , v };
-    this.service.sendCommand(data);
+
+  openDialog(id: string): void {
+    const dialogRef = this.dialog.open(PopUpComponent, {
+      width: '250px',
+      data: {id: id, v: this.v}
+    });
+    dialogRef.afterClosed().subscribe((result:ItemWrite) => {
+      // this setCommand is only for test, je pense j'aurais besoin de lancer l'application en mode admin pour que sa marche.
+      this.service.sendCommand(result);
+    });
   }
+
+
 }

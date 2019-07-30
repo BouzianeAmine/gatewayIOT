@@ -8,18 +8,22 @@ import {MatInputModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
 import { AppComponent } from './app.component';
 import {MatListModule, MatCardModule} from '@angular/material/';
-// import {MatCardModule} from '@angular/material/card';
 import { ChartsModule } from 'ng2-charts';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDialogModule} from '@angular/material/dialog';
+import { PopUpComponent } from './pop-up/pop-up.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PopUpComponent
    ],
   imports: [
-    // tslint:disable-next-line:max-line-length
-    BrowserModule, HttpClientModule, FormsModule, BrowserAnimationsModule , MatFormFieldModule , MatInputModule , MatButtonModule, MatListModule, MatCardModule, ChartsModule
+    BrowserModule, HttpClientModule, FormsModule, BrowserAnimationsModule , MatFormFieldModule , MatInputModule , MatButtonModule, MatListModule, MatCardModule, ChartsModule, MatTabsModule, MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [PopUpComponent]
 })
 export class AppModule { }

@@ -1,0 +1,10 @@
+<div mat-dialog-content>
+  <p>Entrer la nouvelle valeur : </p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.v">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Merci</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
