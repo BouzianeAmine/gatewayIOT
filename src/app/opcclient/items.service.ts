@@ -26,7 +26,7 @@ export class ItemsService {
     this.http.get<IdsItems>(this.adreServer + environment.items, {headers: {
       'Content-Type': 'text/json; charset=utf-8'
     }}).subscribe((el ) => {
-        from(el.browseResults).pipe(skipLast(1)).subscribe(element=>this.anyOtherCase(element.id));
+        from(el.browseResults).pipe(skipLast(1)).subscribe(element=>this.castAnyOtherCase(element.id));
         from(el.browseResults).pipe(last()).subscribe((lastElement)=>this.caseLastOne(lastElement.id));
         this.fetchReadItem(this.requete, calling);
      });
@@ -49,7 +49,7 @@ export class ItemsService {
   }*/
 
 
-  anyOtherCase(id: string ) {
+  castAnyOtherCase(id: string ) {
     this.requete = this.requete.concat(id);
     this.requete = this.requete.concat( '&ids=' );
   }
@@ -61,7 +61,7 @@ export class ItemsService {
   sendCommand(item: ItemWrite) {
     this.http.post<ResponseWriteCommand>(this.adreServer + environment.itemWrite, [item]).subscribe((response) => {
       if (response.writeResults[0].s == true) {
-        console.log('Done !!, inserted value : ' + response.writeResults[0].v);
+        console.log('Done !!');
       }
     });
   }
