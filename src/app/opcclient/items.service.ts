@@ -59,11 +59,9 @@ export class ItemsService {
   }
 
   sendCommand(item: ItemWrite) {
-    this.http.post<ResponseWriteCommand>(this.adreServer + environment.itemWrite, [item], { headers: {
-      'Content-Type': 'text/json; charset=utf-8'
-    }}).subscribe((response) => {
-      if (response.writeResults[0].s) {
-        console.log('Done !!');
+    this.http.post<ResponseWriteCommand>(this.adreServer + environment.itemWrite, [item]).subscribe((response) => {
+      if (response.writeResults[0].s == true) {
+        console.log('Done !!, inserted value : ' + response.writeResults[0].v);
       }
     });
   }
