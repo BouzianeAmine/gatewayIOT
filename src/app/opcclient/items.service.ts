@@ -17,8 +17,6 @@ export class ItemsService {
 
  fixAdress(adress: string) {
     this.adreServer = adress;
-    console.log('------Adressed fixed------');
-    console.log(this.adreServer);
  }
 
  fetchItems(calling: Function) {
@@ -40,14 +38,9 @@ export class ItemsService {
         back(items.readResults);
         //repeat the call so we can have the update each second
         setTimeout( () => { this.fetchReadItem(this.requete, back); }, 1000);
-      }else throw new Error("No elemnts hapen to be read, check your server adresse");
+      }else throw new Error("No elements hapen to be read, check your server adresse");
     });
   }
-
-  /*fixidsWhiteSpace(id: string) {
-    return id.replace(/ /g, '%20');
-  }*/
-
 
   castAnyOtherCase(id: string ) {
     this.requete = this.requete.concat(id);

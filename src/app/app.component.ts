@@ -46,12 +46,13 @@ export class AppComponent {
   public reset(): void {
     this.fetching = !this.fetching;
     this.serveFix = !this.serveFix;
+    this.service.fixAdress('');
   }
 
-  openDialog(id: string): void {
+  openDialog(item: Item): void {
     const dialogRef = this.dialog.open(PopUpComponent, {
       width: '250px',
-      data: {id: id, v: this.v}
+      data: {id: item.id, v: item.v}
     });
     dialogRef.afterClosed().subscribe((result:ItemWrite) => {
       // this setCommand is only for test, je pense j'aurais besoin de lancer l'application en mode admin pour que sa marche.
